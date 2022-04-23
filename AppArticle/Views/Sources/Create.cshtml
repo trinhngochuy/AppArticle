@@ -1,0 +1,137 @@
+﻿@model AppArticle.Models.Source
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Source</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        <div class="d-flex p-2">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.link, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => model.link, new { htmlAttributes = new { @class = "form-control", @Value = "https://vnexpress.net/bong-da", @name = "link"} })
+                @Html.ValidationMessageFor(model => model.link, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-10" style="margin-top:20px;">
+                <label class="control-label col-md-2">Selector</label>
+                <input type="text" class="form-control" name="selector" value="col-left col-left-subfolder" />
+            </div>
+            <div class="col-md-4 text-center" style="margin-top:20px;">
+                <button type="button" id="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    Submit
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="selector-detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form name="insert">
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.link, htmlAttributes: new { @class = "control-label col-md-1" })
+                            <div class="col-md-12">
+                                <input name="link-step" type="text" class="form-control" />
+                                @Html.ValidationMessageFor(model => model.link, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.superSelector, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-12">
+                                <input name="superselector" type="text" class="form-control" />
+                                @Html.ValidationMessageFor(model => model.superSelector, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.titleSelector, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.titleSelector, new { htmlAttributes = new { @class = "form-control",@Value = "title-detail" } })
+                                @Html.ValidationMessageFor(model => model.titleSelector, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.descriptionSelector, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.descriptionSelector, new { htmlAttributes = new { @class = "form-control",@Value= "description" } })
+                                @Html.ValidationMessageFor(model => model.descriptionSelector, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.imgSelector, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.imgSelector, new { htmlAttributes = new { @class = "form-control",@Value= "fig-picture" } })
+                                @Html.ValidationMessageFor(model => model.imgSelector, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.contentSelector, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.contentSelector, new { htmlAttributes = new { @class = "form-control",@Value= "Normal" } })
+                                @Html.ValidationMessageFor(model => model.contentSelector, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="insert" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width: 90%;" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Links Detail</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-link">
+
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+                    <button type="button" class="btn btn-primary next-step" data-dismiss="modal" data-toggle="modal" data-target="#selector-detail" data-whatever="fat">Next Step</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/Js/article")
+    @Scripts.Render("~/bundles/jqueryval")
+}

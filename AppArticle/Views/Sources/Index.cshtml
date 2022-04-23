@@ -1,0 +1,57 @@
+﻿@model IEnumerable<AppArticle.Models.Source>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.link)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.titleSelector)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.descriptionSelector)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.imgSelector)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.contentSelector)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.link)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.titleSelector)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.descriptionSelector)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.imgSelector)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.contentSelector)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using AppArticle.Data;
 using AppArticle.Models;
-
+using PagedList;
 namespace AppArticle.Controllers
 {
     public class ArticlesController : Controller
@@ -16,19 +16,25 @@ namespace AppArticle.Controllers
         private Context db = new Context();
 
         // GET: Articles
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            return View(db.Articles.ToList());
+            if (page == null) page = 1;
+            var articles = (from l in db.Articles
+                         select l).OrderBy(x => x.link_detail);
+            int pageSize = 7;
+            int pageNumber = (page ?? 1);
+/*            return View(db.Articles.ToList());*/
+            return View(articles.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Articles/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(string link_detail)
         {
-            if (id == null)
+            if (link_detail == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Article article = db.Articles.Find(id);
+            Article article = db.Articles.Find(link_detail);
             if (article == null)
             {
                 return HttpNotFound();

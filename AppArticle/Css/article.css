@@ -1,2 +1,53 @@
 ﻿body {
+    background-image: url("https://images.pexels.com/photos/161559/background-bitter-breakfast-bright-161559.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+.table tr th:nth-child(4), td:nth-child(4) img {
+   width:200px;
+}
+td:nth-child(4) img {
+    height: 157px;
+    object-fit: cover;
+}
+    .action {
+        display: flex;
+        flex-direction: column;
+    }
+.action-item{
+    display:flex;
+    padding:3px;
+    margin:7px;
+    cursor:pointer;
+    border:1px solid black;
+    justify-content:space-between;
+}
+    .action-item:hover, .action-item:hover a {
+        background-color: orangered;
+        color: white;
+    }
+    .action-item, .action-item a {
+        color: black;
+    text-decoration:none;
+    }
+.action-item i{
+    margin-left:10px;
+}
+.head-cam{
+    display:flex;
+}
+.head-cam div{
+    flex:1;
+}
+.cam-search{
+    padding:20px;
+    text-align:center;
+}
+.cam-search input{
+    width:100%;
+}
+.panigate{
+    margin:0 auto;
+    text-align:center;
 }

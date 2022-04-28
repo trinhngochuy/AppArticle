@@ -74,8 +74,47 @@ namespace BotSource
                     ListString.Add(linkz.GetAttributeValue("href", null));
                 }
                 var result = ListString.Except(ListArticleLink).ToArray();
-                    foreach (var re in result)
+                for (int i = 0; i < result.Length; i++)
+                {
+                   var re = result[i];
+                    
+                
+                    if (i >0)
                     {
+                        var rebe = result[i - 1];
+
+                        if (!re.Contains(rebe))
+                        {
+                            Source subsource = new Source()
+                            {
+                                link = re,
+                                titleSelector = source.titleSelector,
+                                descriptionSelector = source.descriptionSelector,
+                                imgSelector = source.imgSelector,
+                                contentSelector = source.contentSelector,
+                            };
+                            Console.WriteLine(re);
+                            //ListSubSource.Add(subsource);
+                            var factory = new ConnectionFactory() { HostName = "localhost" };
+                            using (var connection = factory.CreateConnection())
+                            using (var channel = connection.CreateModel())
+                            {
+                                channel.QueueDeclare(queue: "SubSource",
+                                                     durable: false,
+                                                     exclusive: false,
+                                                     autoDelete: false,
+                                                     arguments: null);
+                                var yourObject = JsonConvert.SerializeObject(subsource);
+                                var body = Encoding.UTF8.GetBytes(yourObject);
+                                channel.BasicPublish(exchange: "",
+                                           routingKey: "SubSource",
+                                           basicProperties: null,
+                                           body: body);
+
+                            }
+                        }
+                    }
+                    else {
                         Source subsource = new Source()
                         {
                             link = re,
@@ -84,24 +123,25 @@ namespace BotSource
                             imgSelector = source.imgSelector,
                             contentSelector = source.contentSelector,
                         };
-     
-                    //ListSubSource.Add(subsource);
-                    var factory = new ConnectionFactory() { HostName = "localhost" };
-                    using (var connection = factory.CreateConnection())
-                    using (var channel = connection.CreateModel())
-                    {
-                        channel.QueueDeclare(queue: "SubSource",
-                                             durable: false,
-                                             exclusive: false,
-                                             autoDelete: false,
-                                             arguments: null);
-                        var yourObject = JsonConvert.SerializeObject(subsource);
-                        var body = Encoding.UTF8.GetBytes(yourObject);
-                        channel.BasicPublish(exchange: "",
-                                   routingKey: "SubSource",
-                                   basicProperties: null,
-                                   body: body);
+                        Console.WriteLine(re);
+                        //ListSubSource.Add(subsource);
+                        var factory = new ConnectionFactory() { HostName = "localhost" };
+                        using (var connection = factory.CreateConnection())
+                        using (var channel = connection.CreateModel())
+                        {
+                            channel.QueueDeclare(queue: "SubSource",
+                                                 durable: false,
+                                                 exclusive: false,
+                                                 autoDelete: false,
+                                                 arguments: null);
+                            var yourObject = JsonConvert.SerializeObject(subsource);
+                            var body = Encoding.UTF8.GetBytes(yourObject);
+                            channel.BasicPublish(exchange: "",
+                                       routingKey: "SubSource",
+                                       basicProperties: null,
+                                       body: body);
 
+                        }
                     }
                 }
             }

@@ -19,7 +19,7 @@ namespace BotArticle
         {
          
             SubSource Source = new SubSource();
-            HashSet<Article> ListArticle = new HashSet<Article>(new LinkComparer());
+          
             String sql = "INSERT INTO Articles (title,description,thumnail,content,created_at,categoryArticle_id,link_detail) VALUES (@title, @description, @thumnail, @content,@created_at,@categoryArticle_id,@link_detail)";
             var factory = new ConnectionFactory() { HostName = "localhost" };
             using (SqlConnection cnn = ConectionHelper.getConection())
@@ -65,23 +65,19 @@ namespace BotArticle
                                 contentArticle.Add(conttent.InnerHtml);
                             }
                             subarticle.content = JsonConvert.SerializeObject(contentArticle);
-                  
-             
-                            ListArticle.Add(subarticle);
+
+                        SqlCommand command = new SqlCommand(sql, cnn);
+                        command.Parameters.Add("@link_detail", subarticle.link_detail);
+                        command.Parameters.Add("@title", subarticle.title);
+                        command.Parameters.Add("@description", subarticle.description);
+                        command.Parameters.Add("@thumnail", subarticle.thumnail);
+                        command.Parameters.Add("@created_at", DateTime.Now);
+                        command.Parameters.Add("@content", subarticle.content);
+                        command.Parameters.Add("@categoryArticle_id", 1);
+                        command.ExecuteNonQuery();
                         }
-                    /*           foreach(var ar in ListArticle)
-                               {
-                                   SqlCommand command = new SqlCommand(sql, cnn);
-                                   command.Parameters.Add("@link_detail", ar.link_detail);
-                                   command.Parameters.Add("@title", ar.title);
-                                   command.Parameters.Add("@description", ar.description);
-                                   command.Parameters.Add("@thumnail", ar.thumnail);
-                                   command.Parameters.Add("@created_at", DateTime.Now);
-                                   command.Parameters.Add("@content", ar.content);
-                                   command.Parameters.Add("@categoryArticle_id", 1);
-                                   command.ExecuteNonQuery();
-                               }*/
-                    Console.WriteLine(ListArticle.Count);
+             
+
                     //Console.WriteLine(ListSource.Count()); sẽ không chạy được nếu viết ngoài hàm recived vì lý do revied :v là một luồng khác chạy chậm hơn các luồn ngoài
                 };
                 channel.BasicConsume(queue: "SubSource",
